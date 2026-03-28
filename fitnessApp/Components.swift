@@ -2,20 +2,23 @@ import SwiftUI
 
 struct AppBackground: View {
     var body: some View {
-        ZStack {
-            AppTheme.background
-                .ignoresSafeArea()
+        GeometryReader { proxy in
+            ZStack {
+                AppTheme.background
+                    .ignoresSafeArea()
 
-            AppTheme.glowGradient
-                .frame(width: 480, height: 480)
-                .offset(x: 90, y: -180)
-                .blur(radius: 12)
+                AppTheme.glowGradient
+                    .frame(width: 480, height: 480)
+                    .offset(x: proxy.size.width * 0.25, y: -proxy.size.height * 0.22)
+                    .blur(radius: 12)
 
-            AppTheme.warmGlowGradient
-                .frame(width: 420, height: 420)
-                .offset(x: -110, y: 260)
-                .blur(radius: 18)
+                AppTheme.warmGlowGradient
+                    .frame(width: 420, height: 420)
+                    .offset(x: -proxy.size.width * 0.28, y: proxy.size.height * 0.28)
+                    .blur(radius: 18)
+            }
         }
+        .ignoresSafeArea()
     }
 }
 
@@ -36,11 +39,12 @@ struct ScreenContainer<Content: View>: View {
                 VStack(alignment: .leading, spacing: AppTheme.sectionSpacing) {
                     content(contentWidth)
                 }
-                .frame(width: contentWidth, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, AppTheme.pagePadding)
                 .padding(.top, 14)
                 .padding(.bottom, 150)
             }
+            .frame(width: proxy.size.width)
             .scrollBounceBehavior(.basedOnSize)
         }
         .accessibilityIdentifier(accessibilityID)
