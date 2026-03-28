@@ -1,8 +1,12 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selectedTab: AppTab = .home
+    @State private var selectedTab: AppTab
     @State private var transitionToken = UUID()
+
+    init() {
+        _selectedTab = State(initialValue: AppLaunchOptions.initialTab)
+    }
 
     var body: some View {
         ZStack {
@@ -11,7 +15,7 @@ struct ContentView: View {
             Group {
                 switch selectedTab {
                 case .home:
-                    HomeDashboardView()
+                    HomeDashboardView(initialScrollTarget: AppLaunchOptions.homeScrollTarget)
                 case .workouts:
                     WorkoutsView()
                 case .insights:

@@ -1,13 +1,18 @@
 import SwiftUI
 
 struct HomeDashboardView: View {
+    var initialScrollTarget: String? = nil
+
     var body: some View {
-        ScreenContainer(accessibilityID: "screen.home") { contentWidth in
+        ScreenContainer(accessibilityID: "screen.home", initialScrollTarget: initialScrollTarget) { contentWidth in
             topBar
             activitySummary(contentWidth: contentWidth)
             HeartRateChartCard(bars: MockData.heartRateBars)
+                .id("home-heart-rate")
             SleepAnalysisCard()
+                .id("home-sleep")
             recentWorkouts
+                .id("home-workouts")
         }
     }
 

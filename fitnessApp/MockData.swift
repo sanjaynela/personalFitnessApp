@@ -36,6 +36,21 @@ enum AppTab: String, CaseIterable, Identifiable {
     }
 }
 
+enum AppLaunchOptions {
+    static var initialTab: AppTab {
+        guard let rawValue = ProcessInfo.processInfo.environment["SCREENSHOT_TAB"]?.lowercased(),
+              let tab = AppTab(rawValue: rawValue) else {
+            return .home
+        }
+
+        return tab
+    }
+
+    static var homeScrollTarget: String? {
+        ProcessInfo.processInfo.environment["SCREENSHOT_HOME_SCROLL"]
+    }
+}
+
 struct ActivityRing: Identifiable {
     let id = UUID()
     let title: String

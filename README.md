@@ -17,6 +17,18 @@ The app ships as a 4-tab experience:
 
 All content is powered by static mock data for a design-first v1. There is no backend, auth flow, persistence layer, or HealthKit integration in this version.
 
+## Screenshots
+
+Captured from the iPhone 17 Pro simulator and stored in [`docs/screenshots`](docs/screenshots).
+
+| Home Overview | Home Detail |
+| --- | --- |
+| ![Home overview](docs/screenshots/home-overview.png) | ![Home detail](docs/screenshots/home-detail.png) |
+
+| Workouts | Insights | Profile |
+| --- | --- | --- |
+| ![Workouts screen](docs/screenshots/workouts.png) | ![Insights screen](docs/screenshots/insights.png) | ![Profile screen](docs/screenshots/profile.png) |
+
 ## Design Direction
 
 The visual system is built around:

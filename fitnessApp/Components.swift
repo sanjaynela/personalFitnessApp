@@ -24,10 +24,16 @@ struct AppBackground: View {
 
 struct ScreenContainer<Content: View>: View {
     let accessibilityID: String
+    var initialScrollTarget: String?
     let content: (CGFloat) -> Content
 
-    init(accessibilityID: String, @ViewBuilder content: @escaping (CGFloat) -> Content) {
+    init(
+        accessibilityID: String,
+        initialScrollTarget: String? = nil,
+        @ViewBuilder content: @escaping (CGFloat) -> Content
+    ) {
         self.accessibilityID = accessibilityID
+        self.initialScrollTarget = initialScrollTarget
         self.content = content
     }
 
@@ -35,17 +41,26 @@ struct ScreenContainer<Content: View>: View {
         GeometryReader { proxy in
             let contentWidth = max(0, proxy.size.width - (AppTheme.pagePadding * 2))
 
-            ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading, spacing: AppTheme.sectionSpacing) {
-                    content(contentWidth)
+            ScrollViewReader { scrollProxy in
+                ScrollView(showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: AppTheme.sectionSpacing) {
+                        content(contentWidth)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, AppTheme.pagePadding)
+                    .padding(.top, 14)
+                    .padding(.bottom, 150)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, AppTheme.pagePadding)
-                .padding(.top, 14)
-                .padding(.bottom, 150)
+                .frame(width: proxy.size.width)
+                .scrollBounceBehavior(.basedOnSize)
+                .onAppear {
+                    guard let initialScrollTarget else { return }
+
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                        scrollProxy.scrollTo(initialScrollTarget, anchor: .top)
+                    }
+                }
             }
-            .frame(width: proxy.size.width)
-            .scrollBounceBehavior(.basedOnSize)
         }
         .accessibilityIdentifier(accessibilityID)
     }
